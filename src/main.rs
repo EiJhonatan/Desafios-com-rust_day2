@@ -1,39 +1,45 @@
+use rand::Rng;
 use std::io;
 
 fn main() {
-    println!("Desafio 4: Conversor de Temperatura");
+    println!("Desafio 6: Jogo de Adivinhação");
 
-    let mut numero = String::new();
-    println!("inserir um numero pra gera a tabuada do 1 a 10:");
-   
-    io::stdin()
-    .read_line(&mut numero)
-    .expect("erro ao receber o numero");
+    // Gerar um número aleatório entre 1 e 100
+    let numero_aleatorio = rand::thread_rng().gen_range(1..=100);
 
-/*usa com while
-let numero: i64 = numero.trim().parse().expect("Por favor, insira um número válido.");
-*/
-   
-   
-  // usa com for
-  let numero: i32 = numero.trim().parse().expect("Por favor, insira um número válido.");
+    let mut tentativas = 0;
 
-   
-   let mut contador = 1;
+    loop {
+        // Incrementar o número de tentativas
+        tentativas += 1;
 
-  /*   com while
-   println!("Tabuada do {}:", numero);
-   while contador <= 10 {
-        let resultado = numero * contador;
-        println!("{} x {} = {}", numero, contador, resultado);
-        contador += 1;
+        // Solicitar palpite do usuário
+        let mut palpite = String::new();
+        println!("Tente adivinhar um número entre 1 e 100:");
+        io::stdin()
+            .read_line(&mut palpite)
+            .expect("Erro ao receber o palpite.");
+
+        // Converter o palpite para número
+        let palpite: i32 = match palpite.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Por favor, insira um número válido!");
+                continue;
+            }
+        };
+
+        // Verificar o palpite
+        if palpite < numero_aleatorio {
+            println!("Seu palpite está muito baixo!");
+        } else if palpite > numero_aleatorio {
+            println!("Seu palpite está muito alto!");
+        } else {
+            println!(
+                "Parabéns! Você acertou! O número era {}. Você precisou de {} tentativas.",
+                numero_aleatorio, tentativas
+            );
+            break;
+        }
     }
-    */
-
-     
-    println!("Tabuada do {}:", numero);
-    for i in 1..=10 {
-        println!("{} x {} = {}", numero, i, numero * i);
-    }
-
 }
